@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for caching
-COPY requirements.txt .
+COPY ml-service/requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /app/models/v1
 
 # Copy application code
-COPY app/ ./app/
+COPY ml-service/app/ ./app/
 
 # Set environment variables
 ENV PYTHONPATH=/app
