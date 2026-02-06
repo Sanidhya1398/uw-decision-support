@@ -1,0 +1,226 @@
+{
+  "version": "1.0.0",
+  "lastModified": "2024-01-15T10:30:00Z",
+  "protocols": [
+    {
+      "id": "SA_THRESHOLD_25L",
+      "name": "Sum Assured >= 25 Lakhs Protocol",
+      "description": "Mandatory tests for sum assured above 25 lakhs",
+      "enabled": true,
+      "priority": 100,
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "case.sumAssured", "operator": ">=", "value": 2500000 }
+        ]
+      },
+      "tests": [
+        {
+          "testCode": "CBC",
+          "testName": "Complete Blood Count",
+          "testCategory": "HEMATOLOGY",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 25 lakhs per underwriting protocol",
+          "protocolReference": "UW-PROTO-001",
+          "estimatedCost": 500,
+          "estimatedTurnaroundDays": 1
+        },
+        {
+          "testCode": "URINE",
+          "testName": "Urine Routine & Microscopy",
+          "testCategory": "URINE",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 25 lakhs per underwriting protocol",
+          "protocolReference": "UW-PROTO-001",
+          "estimatedCost": 200,
+          "estimatedTurnaroundDays": 1
+        }
+      ]
+    },
+    {
+      "id": "SA_THRESHOLD_50L",
+      "name": "Sum Assured >= 50 Lakhs Protocol",
+      "description": "Mandatory tests for sum assured above 50 lakhs",
+      "enabled": true,
+      "priority": 90,
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "case.sumAssured", "operator": ">=", "value": 5000000 }
+        ]
+      },
+      "tests": [
+        {
+          "testCode": "LIPID",
+          "testName": "Lipid Profile",
+          "testCategory": "LIPID",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 50 lakhs per underwriting protocol",
+          "protocolReference": "UW-PROTO-002",
+          "estimatedCost": 800,
+          "estimatedTurnaroundDays": 1
+        },
+        {
+          "testCode": "FBS",
+          "testName": "Fasting Blood Sugar",
+          "testCategory": "GLYCEMIC",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 50 lakhs per underwriting protocol",
+          "protocolReference": "UW-PROTO-002",
+          "estimatedCost": 150,
+          "estimatedTurnaroundDays": 1
+        }
+      ]
+    },
+    {
+      "id": "SA_THRESHOLD_1CR",
+      "name": "Sum Assured >= 1 Crore Protocol",
+      "description": "Mandatory tests for sum assured above 1 crore",
+      "enabled": true,
+      "priority": 80,
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "case.sumAssured", "operator": ">=", "value": 10000000 }
+        ]
+      },
+      "tests": [
+        {
+          "testCode": "ECG",
+          "testName": "Electrocardiogram",
+          "testCategory": "CARDIAC",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 1 crore per underwriting protocol",
+          "protocolReference": "UW-PROTO-003",
+          "estimatedCost": 400,
+          "estimatedTurnaroundDays": 1
+        },
+        {
+          "testCode": "LFT",
+          "testName": "Liver Function Test",
+          "testCategory": "HEPATIC",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 1 crore per underwriting protocol",
+          "protocolReference": "UW-PROTO-003",
+          "estimatedCost": 600,
+          "estimatedTurnaroundDays": 1
+        },
+        {
+          "testCode": "RFT",
+          "testName": "Renal Function Test",
+          "testCategory": "RENAL",
+          "requirementType": "MANDATORY",
+          "clinicalRationale": "Required for sum assured above Rs. 1 crore per underwriting protocol",
+          "protocolReference": "UW-PROTO-003",
+          "estimatedCost": 600,
+          "estimatedTurnaroundDays": 1
+        }
+      ]
+    },
+    {
+      "id": "DIABETES_DISCLOSURE",
+      "name": "Diabetes Condition Protocol",
+      "description": "Conditional tests for diabetic applicants",
+      "enabled": true,
+      "priority": 70,
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "condition" },
+          { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "diabetes", "caseInsensitive": true }
+        ]
+      },
+      "tests": [
+        {
+          "testCode": "HBA1C",
+          "testName": "HbA1c (Glycated Hemoglobin)",
+          "testCategory": "GLYCEMIC",
+          "requirementType": "CONDITIONAL",
+          "clinicalRationale": "Recommended for diabetic applicants to assess glycemic control over past 3 months",
+          "protocolReference": "UW-PROTO-DM-001",
+          "estimatedCost": 500,
+          "estimatedTurnaroundDays": 1
+        },
+        {
+          "testCode": "MICROALB",
+          "testName": "Urine Microalbumin",
+          "testCategory": "RENAL",
+          "requirementType": "CONDITIONAL",
+          "clinicalRationale": "Recommended for diabetic applicants to screen for early nephropathy",
+          "protocolReference": "UW-PROTO-DM-002",
+          "estimatedCost": 400,
+          "estimatedTurnaroundDays": 2
+        }
+      ]
+    },
+    {
+      "id": "CARDIAC_DISCLOSURE",
+      "name": "Cardiac Condition Protocol",
+      "description": "Conditional tests for applicants with cardiac history",
+      "enabled": true,
+      "priority": 75,
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "condition" },
+          {
+            "operator": "OR",
+            "conditions": [
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "cardiac", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "heart", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "coronary", "caseInsensitive": true }
+            ]
+          }
+        ]
+      },
+      "tests": [
+        {
+          "testCode": "ECHO",
+          "testName": "Echocardiogram",
+          "testCategory": "CARDIAC",
+          "requirementType": "CONDITIONAL",
+          "clinicalRationale": "Recommended for applicants with cardiac history to assess cardiac function",
+          "protocolReference": "UW-PROTO-CARD-001",
+          "estimatedCost": 2500,
+          "estimatedTurnaroundDays": 3
+        },
+        {
+          "testCode": "TMT",
+          "testName": "Treadmill Test (Stress ECG)",
+          "testCategory": "CARDIAC",
+          "requirementType": "CONDITIONAL",
+          "clinicalRationale": "Recommended for applicants with cardiac history to assess exercise tolerance",
+          "protocolReference": "UW-PROTO-CARD-002",
+          "estimatedCost": 2000,
+          "estimatedTurnaroundDays": 3
+        }
+      ]
+    },
+    {
+      "id": "AGE_OVER_45",
+      "name": "Age Over 45 Protocol",
+      "description": "Suggested tests for applicants over 45 years",
+      "enabled": true,
+      "priority": 50,
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "applicant.age", "operator": ">=", "value": 45 }
+        ]
+      },
+      "tests": [
+        {
+          "testCode": "ECG",
+          "testName": "Electrocardiogram",
+          "testCategory": "CARDIAC",
+          "requirementType": "SUGGESTED",
+          "clinicalRationale": "Suggested for applicants over 45 years for baseline cardiac assessment",
+          "protocolReference": "UW-PROTO-AGE-001",
+          "estimatedCost": 400,
+          "estimatedTurnaroundDays": 1,
+          "skipIfExists": true
+        }
+      ]
+    }
+  ]
+}

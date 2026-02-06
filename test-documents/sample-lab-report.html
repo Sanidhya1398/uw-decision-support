@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pathology Lab Report</title>
+    <style>
+        body { font-family: 'Courier New', monospace; max-width: 800px; margin: 20px auto; padding: 20px; font-size: 12px; }
+        .header { text-align: center; border-bottom: 3px double #000; padding-bottom: 15px; margin-bottom: 15px; }
+        .lab-name { font-size: 20px; font-weight: bold; }
+        .section { margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { border: 1px solid #000; padding: 5px; text-align: left; }
+        th { background: #e0e0e0; }
+        .abnormal { font-weight: bold; }
+        .high { color: #c00; }
+        .low { color: #00c; }
+        .footer { margin-top: 30px; font-size: 10px; border-top: 1px solid #000; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="lab-name">SRL DIAGNOSTICS</div>
+        <div>NABL Accredited Laboratory</div>
+        <div>Plot 42, Industrial Area, Phase-II, Gurgaon - 122002</div>
+        <div>Ph: 0124-4567890 | Email: reports@srldiag.com</div>
+    </div>
+
+    <div class="section">
+        <table>
+            <tr><td width="25%"><strong>Patient Name</strong></td><td width="25%">Mrs. Anita Desai</td>
+                <td width="25%"><strong>Lab ID</strong></td><td width="25%">SRL/2024/89456</td></tr>
+            <tr><td><strong>Age/Sex</strong></td><td>52 Years / Female</td>
+                <td><strong>Sample Date</strong></td><td>30-Jan-2024 08:30 AM</td></tr>
+            <tr><td><strong>Ref. Doctor</strong></td><td>Dr. Vikram Singh</td>
+                <td><strong>Report Date</strong></td><td>31-Jan-2024 06:00 PM</td></tr>
+            <tr><td><strong>Sample Type</strong></td><td>Serum, Whole Blood</td>
+                <td><strong>Barcode</strong></td><td>8945612378</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>COMPLETE BLOOD COUNT (CBC)</h3>
+        <table>
+            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Flag</th></tr>
+            <tr><td>Hemoglobin</td><td class="abnormal low">10.2</td><td>g/dL</td><td>12.0 - 16.0</td><td class="low">LOW</td></tr>
+            <tr><td>RBC Count</td><td class="abnormal low">3.8</td><td>million/cumm</td><td>4.0 - 5.5</td><td class="low">LOW</td></tr>
+            <tr><td>PCV/Hematocrit</td><td class="abnormal low">32</td><td>%</td><td>36 - 46</td><td class="low">LOW</td></tr>
+            <tr><td>MCV</td><td>84.2</td><td>fL</td><td>80 - 100</td><td></td></tr>
+            <tr><td>MCH</td><td>26.8</td><td>pg</td><td>27 - 32</td><td></td></tr>
+            <tr><td>MCHC</td><td>31.9</td><td>g/dL</td><td>32 - 36</td><td></td></tr>
+            <tr><td>RDW-CV</td><td class="abnormal high">16.5</td><td>%</td><td>11.5 - 14.5</td><td class="high">HIGH</td></tr>
+            <tr><td>WBC Count</td><td>7,200</td><td>/cumm</td><td>4,000 - 11,000</td><td></td></tr>
+            <tr><td>Platelet Count</td><td>245,000</td><td>/cumm</td><td>150,000 - 400,000</td><td></td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>THYROID FUNCTION TEST</h3>
+        <table>
+            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Flag</th></tr>
+            <tr><td>TSH (Ultrasensitive)</td><td class="abnormal high">8.72</td><td>mIU/L</td><td>0.35 - 5.50</td><td class="high">HIGH</td></tr>
+            <tr><td>Free T4</td><td class="abnormal low">0.68</td><td>ng/dL</td><td>0.89 - 1.76</td><td class="low">LOW</td></tr>
+            <tr><td>Free T3</td><td>2.1</td><td>pg/mL</td><td>2.0 - 4.4</td><td></td></tr>
+            <tr><td>Anti-TPO Antibodies</td><td class="abnormal high">285</td><td>IU/mL</td><td>&lt;35</td><td class="high">HIGH</td></tr>
+        </table>
+        <p><em>Interpretation: Findings suggestive of Primary Hypothyroidism, likely Hashimoto's Thyroiditis based on elevated Anti-TPO antibodies.</em></p>
+    </div>
+
+    <div class="section">
+        <h3>LIPID PROFILE</h3>
+        <table>
+            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Flag</th></tr>
+            <tr><td>Total Cholesterol</td><td class="abnormal high">268</td><td>mg/dL</td><td>&lt;200</td><td class="high">HIGH</td></tr>
+            <tr><td>Triglycerides</td><td class="abnormal high">195</td><td>mg/dL</td><td>&lt;150</td><td class="high">HIGH</td></tr>
+            <tr><td>HDL Cholesterol</td><td class="abnormal low">42</td><td>mg/dL</td><td>&gt;50 (Female)</td><td class="low">LOW</td></tr>
+            <tr><td>LDL Cholesterol</td><td class="abnormal high">187</td><td>mg/dL</td><td>&lt;100</td><td class="high">HIGH</td></tr>
+            <tr><td>VLDL Cholesterol</td><td>39</td><td>mg/dL</td><td>&lt;40</td><td></td></tr>
+            <tr><td>Total Chol/HDL Ratio</td><td class="abnormal high">6.4</td><td></td><td>&lt;4.5</td><td class="high">HIGH</td></tr>
+            <tr><td>LDL/HDL Ratio</td><td class="abnormal high">4.5</td><td></td><td>&lt;3.0</td><td class="high">HIGH</td></tr>
+        </table>
+        <p><em>Cardiovascular Risk Assessment: HIGH RISK profile. Recommend lifestyle modifications and possible pharmacotherapy.</em></p>
+    </div>
+
+    <div class="section">
+        <h3>LIVER FUNCTION TEST</h3>
+        <table>
+            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Flag</th></tr>
+            <tr><td>Bilirubin Total</td><td>0.8</td><td>mg/dL</td><td>0.2 - 1.2</td><td></td></tr>
+            <tr><td>Bilirubin Direct</td><td>0.2</td><td>mg/dL</td><td>0.0 - 0.3</td><td></td></tr>
+            <tr><td>SGPT (ALT)</td><td class="abnormal high">68</td><td>U/L</td><td>7 - 35</td><td class="high">HIGH</td></tr>
+            <tr><td>SGOT (AST)</td><td class="abnormal high">52</td><td>U/L</td><td>8 - 33</td><td class="high">HIGH</td></tr>
+            <tr><td>Alkaline Phosphatase</td><td>95</td><td>U/L</td><td>35 - 104</td><td></td></tr>
+            <tr><td>GGT</td><td class="abnormal high">58</td><td>U/L</td><td>5 - 36</td><td class="high">HIGH</td></tr>
+            <tr><td>Total Protein</td><td>7.2</td><td>g/dL</td><td>6.0 - 8.0</td><td></td></tr>
+            <tr><td>Albumin</td><td>4.1</td><td>g/dL</td><td>3.5 - 5.2</td><td></td></tr>
+        </table>
+        <p><em>Mildly elevated liver enzymes. Recommend ultrasound abdomen and follow-up testing. Consider fatty liver disease in context of dyslipidemia.</em></p>
+    </div>
+
+    <div class="section">
+        <h3>KIDNEY FUNCTION TEST</h3>
+        <table>
+            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Flag</th></tr>
+            <tr><td>Blood Urea</td><td>32</td><td>mg/dL</td><td>15 - 40</td><td></td></tr>
+            <tr><td>Serum Creatinine</td><td>0.9</td><td>mg/dL</td><td>0.5 - 1.1</td><td></td></tr>
+            <tr><td>eGFR</td><td>78</td><td>mL/min/1.73m²</td><td>&gt;90</td><td></td></tr>
+            <tr><td>Uric Acid</td><td>5.8</td><td>mg/dL</td><td>2.4 - 6.0</td><td></td></tr>
+            <tr><td>Sodium</td><td>142</td><td>mEq/L</td><td>136 - 145</td><td></td></tr>
+            <tr><td>Potassium</td><td>4.2</td><td>mEq/L</td><td>3.5 - 5.1</td><td></td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>DIABETES SCREENING</h3>
+        <table>
+            <tr><th>Test</th><th>Result</th><th>Unit</th><th>Reference Range</th><th>Flag</th></tr>
+            <tr><td>Fasting Blood Glucose</td><td class="abnormal high">118</td><td>mg/dL</td><td>70 - 100</td><td class="high">HIGH</td></tr>
+            <tr><td>HbA1c</td><td class="abnormal high">6.2</td><td>%</td><td>&lt;5.7</td><td class="high">HIGH</td></tr>
+        </table>
+        <p><em>Prediabetic range. Recommend dietary modifications and repeat testing in 3 months.</em></p>
+    </div>
+
+    <div class="footer">
+        <p><strong>*** END OF REPORT ***</strong></p>
+        <p>Validated by: Dr. Renu Sharma, MD (Pathology) | Lab Director</p>
+        <p>This report is electronically generated and does not require signature.</p>
+        <p>Note: Results should be interpreted in clinical context. Abnormal values marked in RED (High) or BLUE (Low).</p>
+        <p>For queries: Call 0124-4567890 or email reports@srldiag.com</p>
+    </div>
+</body>
+</html>

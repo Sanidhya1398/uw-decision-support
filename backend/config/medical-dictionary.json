@@ -1,0 +1,580 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2024-01-15",
+  "conditions": [
+    {
+      "canonicalName": "Type 2 Diabetes Mellitus",
+      "synonyms": ["T2DM", "Type 2 Diabetes", "Diabetes Type 2", "DM", "NIDDM", "Adult-onset Diabetes", "Non-insulin Dependent Diabetes"],
+      "icdCodes": ["E11"],
+      "category": "endocrine",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Type 1 Diabetes Mellitus",
+      "synonyms": ["T1DM", "Type 1 Diabetes", "IDDM", "Juvenile Diabetes", "Insulin Dependent Diabetes"],
+      "icdCodes": ["E10"],
+      "category": "endocrine",
+      "riskTier": "high"
+    },
+    {
+      "canonicalName": "Hypertension",
+      "synonyms": ["HTN", "High Blood Pressure", "High BP", "Essential Hypertension", "Primary Hypertension", "Elevated BP"],
+      "icdCodes": ["I10"],
+      "category": "cardiovascular",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Coronary Artery Disease",
+      "synonyms": ["CAD", "Coronary Heart Disease", "CHD", "Ischemic Heart Disease", "IHD", "Atherosclerotic Heart Disease", "ASHD"],
+      "icdCodes": ["I25"],
+      "category": "cardiovascular",
+      "riskTier": "high"
+    },
+    {
+      "canonicalName": "Myocardial Infarction",
+      "synonyms": ["MI", "Heart Attack", "STEMI", "NSTEMI", "Acute MI", "AMI", "Cardiac Infarction"],
+      "icdCodes": ["I21"],
+      "category": "cardiovascular",
+      "riskTier": "critical"
+    },
+    {
+      "canonicalName": "Chronic Kidney Disease",
+      "synonyms": ["CKD", "Chronic Renal Failure", "Kidney Disease", "Renal Impairment", "Chronic Nephropathy", "CRF"],
+      "icdCodes": ["N18"],
+      "category": "renal",
+      "riskTier": "high"
+    },
+    {
+      "canonicalName": "Asthma",
+      "synonyms": ["Bronchial Asthma", "Allergic Asthma", "Reactive Airway Disease"],
+      "icdCodes": ["J45"],
+      "category": "respiratory",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "COPD",
+      "synonyms": ["Chronic Obstructive Pulmonary Disease", "Emphysema", "Chronic Bronchitis", "Chronic Airway Obstruction"],
+      "icdCodes": ["J44"],
+      "category": "respiratory",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Hyperlipidemia",
+      "synonyms": ["High Cholesterol", "Dyslipidemia", "Hypercholesterolemia", "Elevated Cholesterol", "High Lipids"],
+      "icdCodes": ["E78"],
+      "category": "metabolic",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Hypothyroidism",
+      "synonyms": ["Underactive Thyroid", "Low Thyroid", "Thyroid Deficiency", "Hashimoto's Disease"],
+      "icdCodes": ["E03"],
+      "category": "endocrine",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Hyperthyroidism",
+      "synonyms": ["Overactive Thyroid", "Graves Disease", "Thyrotoxicosis", "High Thyroid"],
+      "icdCodes": ["E05"],
+      "category": "endocrine",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Atrial Fibrillation",
+      "synonyms": ["AF", "AFib", "A-Fib", "Irregular Heartbeat", "Arrhythmia"],
+      "icdCodes": ["I48"],
+      "category": "cardiovascular",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Heart Failure",
+      "synonyms": ["CHF", "Congestive Heart Failure", "Cardiac Failure", "HF", "Left Heart Failure", "Right Heart Failure"],
+      "icdCodes": ["I50"],
+      "category": "cardiovascular",
+      "riskTier": "high"
+    },
+    {
+      "canonicalName": "Stroke",
+      "synonyms": ["CVA", "Cerebrovascular Accident", "Brain Attack", "Cerebral Infarction", "TIA", "Mini Stroke"],
+      "icdCodes": ["I63", "I64"],
+      "category": "neurological",
+      "riskTier": "critical"
+    },
+    {
+      "canonicalName": "Epilepsy",
+      "synonyms": ["Seizure Disorder", "Convulsive Disorder", "Fits"],
+      "icdCodes": ["G40"],
+      "category": "neurological",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Depression",
+      "synonyms": ["Major Depressive Disorder", "MDD", "Clinical Depression", "Depressive Episode"],
+      "icdCodes": ["F32", "F33"],
+      "category": "mental_health",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Anxiety Disorder",
+      "synonyms": ["GAD", "Generalized Anxiety", "Anxiety", "Panic Disorder", "Anxiety Neurosis"],
+      "icdCodes": ["F41"],
+      "category": "mental_health",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Rheumatoid Arthritis",
+      "synonyms": ["RA", "Inflammatory Arthritis", "Autoimmune Arthritis"],
+      "icdCodes": ["M05", "M06"],
+      "category": "musculoskeletal",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Osteoarthritis",
+      "synonyms": ["OA", "Degenerative Joint Disease", "DJD", "Wear and Tear Arthritis"],
+      "icdCodes": ["M15", "M16", "M17"],
+      "category": "musculoskeletal",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Cirrhosis",
+      "synonyms": ["Liver Cirrhosis", "Hepatic Cirrhosis", "Chronic Liver Disease"],
+      "icdCodes": ["K74"],
+      "category": "hepatic",
+      "riskTier": "high"
+    },
+    {
+      "canonicalName": "Hepatitis B",
+      "synonyms": ["HBV", "Hepatitis B Infection", "Hep B", "Chronic Hepatitis B"],
+      "icdCodes": ["B16", "B18.1"],
+      "category": "hepatic",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Hepatitis C",
+      "synonyms": ["HCV", "Hepatitis C Infection", "Hep C", "Chronic Hepatitis C"],
+      "icdCodes": ["B17.1", "B18.2"],
+      "category": "hepatic",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "HIV/AIDS",
+      "synonyms": ["HIV", "AIDS", "HIV Infection", "Human Immunodeficiency Virus"],
+      "icdCodes": ["B20", "B24"],
+      "category": "infectious",
+      "riskTier": "high"
+    },
+    {
+      "canonicalName": "Tuberculosis",
+      "synonyms": ["TB", "Pulmonary TB", "Lung TB", "Mycobacterial Infection"],
+      "icdCodes": ["A15", "A16"],
+      "category": "infectious",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Sleep Apnea",
+      "synonyms": ["OSA", "Obstructive Sleep Apnea", "Sleep Disordered Breathing"],
+      "icdCodes": ["G47.3"],
+      "category": "respiratory",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Anemia",
+      "synonyms": ["Low Hemoglobin", "Iron Deficiency Anemia", "IDA"],
+      "icdCodes": ["D50", "D64"],
+      "category": "hematological",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Gout",
+      "synonyms": ["Gouty Arthritis", "Hyperuricemia", "High Uric Acid"],
+      "icdCodes": ["M10"],
+      "category": "metabolic",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Migraine",
+      "synonyms": ["Migraine Headache", "Chronic Migraine", "Vascular Headache"],
+      "icdCodes": ["G43"],
+      "category": "neurological",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Peptic Ulcer Disease",
+      "synonyms": ["PUD", "Gastric Ulcer", "Duodenal Ulcer", "Stomach Ulcer"],
+      "icdCodes": ["K25", "K26", "K27"],
+      "category": "gastrointestinal",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "GERD",
+      "synonyms": ["Gastroesophageal Reflux Disease", "Acid Reflux", "Heartburn", "Reflux Esophagitis"],
+      "icdCodes": ["K21"],
+      "category": "gastrointestinal",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Fatty Liver Disease",
+      "synonyms": ["NAFLD", "Non-alcoholic Fatty Liver", "Hepatic Steatosis", "Fatty Liver"],
+      "icdCodes": ["K76.0"],
+      "category": "hepatic",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Polycystic Kidney Disease",
+      "synonyms": ["PKD", "ADPKD", "Cystic Kidney Disease"],
+      "icdCodes": ["Q61"],
+      "category": "renal",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Glaucoma",
+      "synonyms": ["Open Angle Glaucoma", "Closed Angle Glaucoma", "High Eye Pressure"],
+      "icdCodes": ["H40"],
+      "category": "ophthalmic",
+      "riskTier": "low"
+    },
+    {
+      "canonicalName": "Breast Cancer",
+      "synonyms": ["Carcinoma Breast", "Breast Carcinoma", "Breast Malignancy"],
+      "icdCodes": ["C50"],
+      "category": "oncology",
+      "riskTier": "critical"
+    },
+    {
+      "canonicalName": "Lung Cancer",
+      "synonyms": ["Carcinoma Lung", "Bronchogenic Carcinoma", "Pulmonary Malignancy"],
+      "icdCodes": ["C34"],
+      "category": "oncology",
+      "riskTier": "critical"
+    },
+    {
+      "canonicalName": "Prostate Cancer",
+      "synonyms": ["Carcinoma Prostate", "Prostatic Carcinoma", "Prostate Malignancy"],
+      "icdCodes": ["C61"],
+      "category": "oncology",
+      "riskTier": "critical"
+    },
+    {
+      "canonicalName": "Colon Cancer",
+      "synonyms": ["Colorectal Cancer", "Carcinoma Colon", "Bowel Cancer", "CRC"],
+      "icdCodes": ["C18", "C19", "C20"],
+      "category": "oncology",
+      "riskTier": "critical"
+    },
+    {
+      "canonicalName": "Peripheral Artery Disease",
+      "synonyms": ["PAD", "PVD", "Peripheral Vascular Disease", "Claudication"],
+      "icdCodes": ["I73.9"],
+      "category": "cardiovascular",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Deep Vein Thrombosis",
+      "synonyms": ["DVT", "Venous Thrombosis", "Blood Clot in Leg"],
+      "icdCodes": ["I82"],
+      "category": "cardiovascular",
+      "riskTier": "moderate"
+    },
+    {
+      "canonicalName": "Pulmonary Embolism",
+      "synonyms": ["PE", "Blood Clot in Lung", "Pulmonary Thromboembolism"],
+      "icdCodes": ["I26"],
+      "category": "cardiovascular",
+      "riskTier": "high"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Metformin",
+      "genericNames": ["Glucophage", "Fortamet", "Glycomet"],
+      "category": "antidiabetic",
+      "class": "biguanide"
+    },
+    {
+      "name": "Glimepiride",
+      "genericNames": ["Amaryl", "Glimy"],
+      "category": "antidiabetic",
+      "class": "sulfonylurea"
+    },
+    {
+      "name": "Sitagliptin",
+      "genericNames": ["Januvia", "Istavel"],
+      "category": "antidiabetic",
+      "class": "dpp4_inhibitor"
+    },
+    {
+      "name": "Insulin",
+      "genericNames": ["Lantus", "Novolog", "Humalog", "Tresiba", "Levemir", "Actrapid"],
+      "category": "insulin",
+      "class": "insulin"
+    },
+    {
+      "name": "Amlodipine",
+      "genericNames": ["Norvasc", "Amlong", "Amlip"],
+      "category": "antihypertensive",
+      "class": "calcium_channel_blocker"
+    },
+    {
+      "name": "Telmisartan",
+      "genericNames": ["Micardis", "Telmikind", "Telma"],
+      "category": "antihypertensive",
+      "class": "arb"
+    },
+    {
+      "name": "Losartan",
+      "genericNames": ["Cozaar", "Losacar", "Losar"],
+      "category": "antihypertensive",
+      "class": "arb"
+    },
+    {
+      "name": "Lisinopril",
+      "genericNames": ["Zestril", "Prinivil", "Listril"],
+      "category": "antihypertensive",
+      "class": "ace_inhibitor"
+    },
+    {
+      "name": "Ramipril",
+      "genericNames": ["Altace", "Cardace"],
+      "category": "antihypertensive",
+      "class": "ace_inhibitor"
+    },
+    {
+      "name": "Atenolol",
+      "genericNames": ["Tenormin", "Aten"],
+      "category": "antihypertensive",
+      "class": "beta_blocker"
+    },
+    {
+      "name": "Metoprolol",
+      "genericNames": ["Lopressor", "Toprol", "Betaloc"],
+      "category": "antihypertensive",
+      "class": "beta_blocker"
+    },
+    {
+      "name": "Carvedilol",
+      "genericNames": ["Coreg", "Carvid"],
+      "category": "antihypertensive",
+      "class": "beta_blocker"
+    },
+    {
+      "name": "Atorvastatin",
+      "genericNames": ["Lipitor", "Atorva", "Storvas"],
+      "category": "lipid_lowering",
+      "class": "statin"
+    },
+    {
+      "name": "Rosuvastatin",
+      "genericNames": ["Crestor", "Rosuvas", "Rozavel"],
+      "category": "lipid_lowering",
+      "class": "statin"
+    },
+    {
+      "name": "Pravastatin",
+      "genericNames": ["Pravachol"],
+      "category": "lipid_lowering",
+      "class": "statin"
+    },
+    {
+      "name": "Aspirin",
+      "genericNames": ["Ecosprin", "Dispirin", "Aspirin"],
+      "category": "antiplatelet",
+      "class": "antiplatelet"
+    },
+    {
+      "name": "Clopidogrel",
+      "genericNames": ["Plavix", "Clopilet", "Plagril"],
+      "category": "antiplatelet",
+      "class": "antiplatelet"
+    },
+    {
+      "name": "Warfarin",
+      "genericNames": ["Coumadin", "Warf"],
+      "category": "anticoagulant",
+      "class": "vitamin_k_antagonist"
+    },
+    {
+      "name": "Rivaroxaban",
+      "genericNames": ["Xarelto"],
+      "category": "anticoagulant",
+      "class": "doac"
+    },
+    {
+      "name": "Apixaban",
+      "genericNames": ["Eliquis"],
+      "category": "anticoagulant",
+      "class": "doac"
+    },
+    {
+      "name": "Omeprazole",
+      "genericNames": ["Prilosec", "Omez"],
+      "category": "gastric",
+      "class": "ppi"
+    },
+    {
+      "name": "Pantoprazole",
+      "genericNames": ["Protonix", "Pan", "Pantocid"],
+      "category": "gastric",
+      "class": "ppi"
+    },
+    {
+      "name": "Levothyroxine",
+      "genericNames": ["Synthroid", "Eltroxin", "Thyronorm"],
+      "category": "thyroid",
+      "class": "thyroid_hormone"
+    },
+    {
+      "name": "Prednisone",
+      "genericNames": ["Deltasone", "Omnacortil"],
+      "category": "steroid",
+      "class": "corticosteroid"
+    },
+    {
+      "name": "Prednisolone",
+      "genericNames": ["Wysolone"],
+      "category": "steroid",
+      "class": "corticosteroid"
+    },
+    {
+      "name": "Salbutamol",
+      "genericNames": ["Albuterol", "Ventolin", "Asthalin"],
+      "category": "respiratory",
+      "class": "bronchodilator"
+    },
+    {
+      "name": "Montelukast",
+      "genericNames": ["Singulair", "Montair"],
+      "category": "respiratory",
+      "class": "leukotriene_antagonist"
+    },
+    {
+      "name": "Fluticasone",
+      "genericNames": ["Flovent", "Flixotide"],
+      "category": "respiratory",
+      "class": "inhaled_steroid"
+    },
+    {
+      "name": "Sertraline",
+      "genericNames": ["Zoloft", "Serlift"],
+      "category": "psychiatric",
+      "class": "ssri"
+    },
+    {
+      "name": "Escitalopram",
+      "genericNames": ["Lexapro", "Cipralex"],
+      "category": "psychiatric",
+      "class": "ssri"
+    },
+    {
+      "name": "Duloxetine",
+      "genericNames": ["Cymbalta", "Duzela"],
+      "category": "psychiatric",
+      "class": "snri"
+    },
+    {
+      "name": "Alprazolam",
+      "genericNames": ["Xanax", "Alprax"],
+      "category": "psychiatric",
+      "class": "benzodiazepine"
+    },
+    {
+      "name": "Clonazepam",
+      "genericNames": ["Klonopin", "Rivotril"],
+      "category": "psychiatric",
+      "class": "benzodiazepine"
+    },
+    {
+      "name": "Gabapentin",
+      "genericNames": ["Neurontin", "Gabapin"],
+      "category": "neurological",
+      "class": "anticonvulsant"
+    },
+    {
+      "name": "Pregabalin",
+      "genericNames": ["Lyrica", "Pregalin"],
+      "category": "neurological",
+      "class": "anticonvulsant"
+    },
+    {
+      "name": "Furosemide",
+      "genericNames": ["Lasix", "Frusenex"],
+      "category": "diuretic",
+      "class": "loop_diuretic"
+    },
+    {
+      "name": "Hydrochlorothiazide",
+      "genericNames": ["HCTZ", "Aquazide"],
+      "category": "diuretic",
+      "class": "thiazide"
+    },
+    {
+      "name": "Allopurinol",
+      "genericNames": ["Zyloprim", "Zyloric"],
+      "category": "gout",
+      "class": "xanthine_oxidase_inhibitor"
+    },
+    {
+      "name": "Methotrexate",
+      "genericNames": ["Trexall", "Folitrax"],
+      "category": "immunosuppressant",
+      "class": "dmard"
+    },
+    {
+      "name": "Hydroxychloroquine",
+      "genericNames": ["Plaquenil", "HCQS"],
+      "category": "immunosuppressant",
+      "class": "dmard"
+    }
+  ],
+  "procedures": [
+    {
+      "canonicalName": "Coronary Artery Bypass Grafting",
+      "synonyms": ["CABG", "Bypass Surgery", "Heart Bypass", "Coronary Bypass"],
+      "category": "cardiac_surgery"
+    },
+    {
+      "canonicalName": "Percutaneous Coronary Intervention",
+      "synonyms": ["PCI", "Angioplasty", "Stent Placement", "PTCA", "Coronary Stenting"],
+      "category": "cardiac_intervention"
+    },
+    {
+      "canonicalName": "Appendectomy",
+      "synonyms": ["Appendix Removal", "Appendicectomy"],
+      "category": "general_surgery"
+    },
+    {
+      "canonicalName": "Cholecystectomy",
+      "synonyms": ["Gallbladder Removal", "Lap Chole"],
+      "category": "general_surgery"
+    },
+    {
+      "canonicalName": "Hernia Repair",
+      "synonyms": ["Herniorrhaphy", "Hernioplasty", "Inguinal Hernia Repair"],
+      "category": "general_surgery"
+    },
+    {
+      "canonicalName": "Cesarean Section",
+      "synonyms": ["C-Section", "LSCS", "Lower Segment Cesarean Section"],
+      "category": "obstetric"
+    },
+    {
+      "canonicalName": "Hysterectomy",
+      "synonyms": ["Uterus Removal", "TAH", "Total Abdominal Hysterectomy"],
+      "category": "gynecological"
+    },
+    {
+      "canonicalName": "Total Knee Replacement",
+      "synonyms": ["TKR", "Knee Arthroplasty", "Knee Replacement"],
+      "category": "orthopedic"
+    },
+    {
+      "canonicalName": "Total Hip Replacement",
+      "synonyms": ["THR", "Hip Arthroplasty", "Hip Replacement"],
+      "category": "orthopedic"
+    },
+    {
+      "canonicalName": "Cataract Surgery",
+      "synonyms": ["Phacoemulsification", "IOL Implant", "Lens Replacement"],
+      "category": "ophthalmic"
+    }
+  ]
+}

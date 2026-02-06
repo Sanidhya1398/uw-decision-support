@@ -1,0 +1,156 @@
+{
+  "version": "1.0.0",
+  "lastModified": "2024-01-15T10:30:00Z",
+  "rules": [
+    {
+      "id": "DEC_001",
+      "name": "Standard Acceptance",
+      "description": "Accept application at standard rates without modifications",
+      "enabled": true,
+      "priority": 100,
+      "decisionType": "STANDARD_ACCEPTANCE",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "riskFactors[severity=critical].count", "operator": "==", "value": 0 },
+          { "field": "riskFactors[severity=high].count", "operator": "==", "value": 0 }
+        ]
+      },
+      "output": {
+        "name": "Standard Acceptance",
+        "description": "Accept the application at standard rates without modifications",
+        "guidelineReference": "UW-GUIDE-001",
+        "authorityRequired": "Junior Underwriter",
+        "supportingFactors": [
+          { "factor": "Risk Profile", "description": "No critical or high severity risk factors identified" },
+          { "factor": "Age/SA within limits", "description": "Application falls within standard acceptance criteria" }
+        ],
+        "weighingFactorsCondition": {
+          "condition": { "field": "riskFactors[severity=moderate].count", "operator": ">", "value": 0 },
+          "factors": [{ "factor": "Moderate risk factors", "description": "Some moderate risk factors present but within acceptable limits" }]
+        },
+        "recommendedCondition": {
+          "condition": { "field": "riskFactors[severity=moderate].count", "operator": "==", "value": 0 },
+          "recommended": true
+        }
+      }
+    },
+    {
+      "id": "DEC_002",
+      "name": "Modified Acceptance",
+      "description": "Accept with exclusions, waiting periods, or premium loading",
+      "enabled": true,
+      "priority": 80,
+      "decisionType": "MODIFIED_ACCEPTANCE",
+      "conditions": {
+        "operator": "OR",
+        "conditions": [
+          { "field": "riskFactors[severity=high].count", "operator": ">", "value": 0 },
+          { "field": "riskFactors[severity=moderate].count", "operator": ">", "value": 0 }
+        ]
+      },
+      "output": {
+        "name": "Modified Acceptance",
+        "description": "Accept with exclusions, waiting periods, or premium loading",
+        "guidelineReference": "UW-GUIDE-002",
+        "authorityRequired": "Senior Underwriter",
+        "supportingFactors": [
+          { "factor": "Manageable risk", "description": "Risk can be managed through policy modifications" }
+        ],
+        "weighingFactorsTemplate": [
+          { "factor": "Elevated risk factors", "descriptionTemplate": "{{riskFactors.elevatedCount}} elevated risk factors identified" }
+        ],
+        "recommendedCondition": {
+          "condition": {
+            "operator": "AND",
+            "conditions": [
+              { "field": "riskFactors[severity=high].count", "operator": ">", "value": 0 },
+              { "field": "riskFactors[severity=critical].count", "operator": "==", "value": 0 }
+            ]
+          },
+          "recommended": true
+        }
+      }
+    },
+    {
+      "id": "DEC_003",
+      "name": "Request Additional Information",
+      "description": "Defer decision pending additional medical records or test results",
+      "enabled": true,
+      "priority": 50,
+      "decisionType": "DEFERRAL",
+      "conditions": {
+        "operator": "OR",
+        "conditions": [
+          { "field": "case.status", "operator": "!=", "value": "never_match" }
+        ]
+      },
+      "alwaysInclude": true,
+      "output": {
+        "name": "Request Additional Information",
+        "description": "Defer decision pending additional medical records or test results",
+        "guidelineReference": "UW-GUIDE-003",
+        "authorityRequired": "Junior Underwriter",
+        "supportingFactors": [
+          { "factor": "Incomplete information", "description": "Additional documentation may clarify risk profile" }
+        ],
+        "weighingFactors": [],
+        "recommended": false
+      }
+    },
+    {
+      "id": "DEC_004",
+      "name": "Refer for Senior Review",
+      "description": "Escalate to senior underwriter or medical director for review",
+      "enabled": true,
+      "priority": 60,
+      "decisionType": "REFERRAL",
+      "conditions": {
+        "operator": "OR",
+        "conditions": [
+          { "field": "riskFactors[severity=critical].count", "operator": ">", "value": 0 },
+          { "field": "riskFactors[severity=high].count", "operator": ">", "value": 0 }
+        ]
+      },
+      "output": {
+        "name": "Refer for Senior Review",
+        "description": "Escalate to senior underwriter or medical director for review",
+        "guidelineReference": "UW-GUIDE-004",
+        "authorityRequired": "Junior Underwriter",
+        "supportingFactors": [
+          { "factor": "Complex case", "description": "Case complexity requires higher authority review" }
+        ],
+        "weighingFactors": [],
+        "recommendedCondition": {
+          "condition": { "field": "riskFactors[severity=critical].count", "operator": ">", "value": 0 },
+          "recommended": true
+        }
+      }
+    },
+    {
+      "id": "DEC_005",
+      "name": "Decline Application",
+      "description": "Unable to offer coverage based on current risk assessment",
+      "enabled": true,
+      "priority": 40,
+      "decisionType": "DECLINE",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "riskFactors[severity=critical].count", "operator": ">", "value": 0 }
+        ]
+      },
+      "output": {
+        "name": "Decline Application",
+        "description": "Unable to offer coverage based on current risk assessment",
+        "guidelineReference": "UW-GUIDE-005",
+        "authorityRequired": "Senior Underwriter",
+        "supportingFactors": [],
+        "weighingFactors": [
+          { "factor": "Critical risk factors", "description": "Critical severity factors present that exceed risk appetite" }
+        ],
+        "recommended": false
+      }
+    }
+  ]
+}

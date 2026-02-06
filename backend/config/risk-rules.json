@@ -1,0 +1,276 @@
+{
+  "version": "1.0.0",
+  "lastModified": "2024-01-15T10:30:00Z",
+  "rules": [
+    {
+      "id": "AGE_001",
+      "name": "Age Risk Assessment",
+      "description": "Identifies elevated risk for applicants above age thresholds",
+      "enabled": true,
+      "priority": 100,
+      "category": "MEDICAL",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "applicant.age", "operator": ">=", "value": 55 }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Advanced Age",
+          "factorDescriptionTemplate": "Applicant age {{applicant.age}} years is above standard threshold",
+          "category": "MEDICAL",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "supportingEvidenceTemplate": [
+            { "description": "Age from application", "valueTemplate": "{{applicant.age}} years" }
+          ]
+        },
+        "severityRules": [
+          { "condition": { "field": "applicant.age", "operator": ">=", "value": 65 }, "severity": "HIGH", "complexityWeight": 0.4 },
+          { "condition": { "field": "applicant.age", "operator": ">=", "value": 55 }, "severity": "MODERATE", "complexityWeight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "BMI_001",
+      "name": "BMI Risk Assessment",
+      "description": "Identifies elevated risk for applicants with high BMI",
+      "enabled": true,
+      "priority": 90,
+      "category": "MEDICAL",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "applicant.bmi", "operator": ">=", "value": 30 }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Elevated BMI",
+          "factorDescriptionTemplate": "BMI of {{applicant.bmi}} indicates {{#if (gte applicant.bmi 35)}}severe {{/if}}obesity",
+          "category": "MEDICAL",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "supportingEvidenceTemplate": [
+            { "description": "Height", "valueTemplate": "{{applicant.heightCm}} cm" },
+            { "description": "Weight", "valueTemplate": "{{applicant.weightKg}} kg" },
+            { "description": "Calculated BMI", "valueTemplate": "{{applicant.bmi}}" }
+          ]
+        },
+        "severityRules": [
+          { "condition": { "field": "applicant.bmi", "operator": ">=", "value": 35 }, "severity": "HIGH", "complexityWeight": 0.35 },
+          { "condition": { "field": "applicant.bmi", "operator": ">=", "value": 30 }, "severity": "MODERATE", "complexityWeight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "SMK_001",
+      "name": "Smoking Status Assessment",
+      "description": "Identifies elevated risk for current smokers",
+      "enabled": true,
+      "priority": 85,
+      "category": "LIFESTYLE",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "applicant.smokingStatus", "operator": "==", "value": "current" }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Current Smoker",
+          "factorDescriptionTemplate": "Active tobacco use increases mortality and morbidity risk",
+          "category": "LIFESTYLE",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "severity": "HIGH",
+          "complexityWeight": 0.3,
+          "supportingEvidenceTemplate": [
+            { "description": "Smoking status", "valueTemplate": "Current smoker" },
+            { "description": "Quantity", "valueTemplate": "{{applicant.smokingQuantity}}" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM_001",
+      "name": "Diabetes Risk Assessment",
+      "description": "Identifies elevated risk for diabetic applicants",
+      "enabled": true,
+      "priority": 80,
+      "category": "MEDICAL",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "condition" },
+          { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "diabetes", "caseInsensitive": true }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Diabetes Mellitus",
+          "factorDescriptionTemplate": "Diagnosed with {{matchedDisclosure.conditionName}}",
+          "category": "MEDICAL",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "supportingEvidenceTemplate": [
+            { "description": "Condition", "valueTemplate": "{{matchedDisclosure.conditionName}}" },
+            { "description": "Status", "valueTemplate": "{{matchedDisclosure.conditionStatus}}" },
+            { "description": "Diagnosis date", "valueTemplate": "{{matchedDisclosure.diagnosisDate}}" }
+          ]
+        },
+        "severityRules": [
+          { "condition": { "field": "matchedDisclosure.conditionStatus", "operator": "==", "value": "active" }, "severity": "HIGH", "complexityWeight": 0.4 },
+          { "defaultSeverity": "MODERATE", "defaultComplexityWeight": 0.25 }
+        ]
+      }
+    },
+    {
+      "id": "HTN_001",
+      "name": "Hypertension Risk Assessment",
+      "description": "Identifies elevated risk for hypertensive applicants",
+      "enabled": true,
+      "priority": 75,
+      "category": "MEDICAL",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "condition" },
+          {
+            "operator": "OR",
+            "conditions": [
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "hypertension", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "blood pressure", "caseInsensitive": true }
+            ]
+          }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Hypertension",
+          "factorDescriptionTemplate": "Diagnosed with {{matchedDisclosure.conditionName}}",
+          "category": "MEDICAL",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "severity": "MODERATE",
+          "complexityWeight": 0.2,
+          "supportingEvidenceTemplate": [
+            { "description": "Condition", "valueTemplate": "{{matchedDisclosure.conditionName}}" },
+            { "description": "Treatment", "valueTemplate": "{{matchedDisclosure.treatmentStatus}}" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "CARD_001",
+      "name": "Cardiac Risk Assessment",
+      "description": "Identifies critical risk for cardiac conditions",
+      "enabled": true,
+      "priority": 95,
+      "category": "MEDICAL",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "condition" },
+          {
+            "operator": "OR",
+            "conditions": [
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "cardiac", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "heart", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "coronary", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "matches", "value": "\\bmi\\b", "caseInsensitive": true }
+            ]
+          }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Cardiac Condition",
+          "factorDescriptionTemplate": "Diagnosed with {{matchedDisclosure.conditionName}}",
+          "category": "MEDICAL",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "severity": "CRITICAL",
+          "complexityWeight": 0.5,
+          "supportingEvidenceTemplate": [
+            { "description": "Condition", "valueTemplate": "{{matchedDisclosure.conditionName}}" },
+            { "description": "Status", "valueTemplate": "{{matchedDisclosure.conditionStatus}}" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "REN_001",
+      "name": "Renal Risk Assessment",
+      "description": "Identifies elevated risk for renal conditions",
+      "enabled": true,
+      "priority": 78,
+      "category": "MEDICAL",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "condition" },
+          {
+            "operator": "OR",
+            "conditions": [
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "kidney", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "renal", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].conditionName", "operator": "contains", "value": "ckd", "caseInsensitive": true }
+            ]
+          }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Renal Impairment",
+          "factorDescriptionTemplate": "Diagnosed with {{matchedDisclosure.conditionName}}",
+          "category": "MEDICAL",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "severity": "HIGH",
+          "complexityWeight": 0.4,
+          "supportingEvidenceTemplate": [
+            { "description": "Condition", "valueTemplate": "{{matchedDisclosure.conditionName}}" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "FH_001",
+      "name": "Family History Assessment",
+      "description": "Identifies elevated risk from family cardiac history",
+      "enabled": true,
+      "priority": 60,
+      "category": "FAMILY_HISTORY",
+      "conditions": {
+        "operator": "AND",
+        "conditions": [
+          { "field": "medicalDisclosures[].disclosureType", "operator": "==", "value": "family_history" },
+          {
+            "operator": "OR",
+            "conditions": [
+              { "field": "medicalDisclosures[].familyCondition", "operator": "contains", "value": "cardiac", "caseInsensitive": true },
+              { "field": "medicalDisclosures[].familyCondition", "operator": "contains", "value": "heart", "caseInsensitive": true }
+            ]
+          }
+        ]
+      },
+      "actions": {
+        "createRiskFactor": {
+          "factorName": "Family History - Cardiac",
+          "factorDescriptionTemplate": "{{matchedDisclosure.familyRelationship}} had {{matchedDisclosure.familyCondition}}",
+          "category": "FAMILY_HISTORY",
+          "impactDirection": "INCREASES_RISK",
+          "source": "DISCLOSURE",
+          "severity": "MODERATE",
+          "complexityWeight": 0.15,
+          "supportingEvidenceTemplate": [
+            { "description": "Relative", "valueTemplate": "{{matchedDisclosure.familyRelationship}}" },
+            { "description": "Condition", "valueTemplate": "{{matchedDisclosure.familyCondition}}" }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "version": "1.0.0",
+  "lastModified": "2024-01-28T10:00:00Z",
+  "description": "Maps risk factors to expected evidence types for coverage gap detection",
+  "coverageRules": [
+    {
+      "id": "CVG_DM_001",
+      "riskFactorPattern": "diabetes",
+      "riskFactorPatternType": "contains",
+      "expectedEvidence": [
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["HBA1C", "FBG", "OGTT"],
+          "testNames": ["HbA1c", "Fasting Blood Glucose", "Oral Glucose Tolerance Test", "Glycated Hemoglobin"],
+          "description": "Glycemic control assessment",
+          "importance": "Determines current diabetes control status and risk level"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["CREAT", "EGFR", "BUN"],
+          "testNames": ["Creatinine", "eGFR", "Blood Urea Nitrogen"],
+          "description": "Renal function panel",
+          "importance": "Diabetes can cause kidney damage; renal function affects mortality risk"
+        },
+        {
+          "evidenceType": "document",
+          "documentTypes": ["medical_report", "specialist_report"],
+          "extractedFields": ["extractedConditions", "extractedMedications"],
+          "description": "Treatment documentation",
+          "importance": "Confirms treatment compliance and medication regimen"
+        }
+      ]
+    },
+    {
+      "id": "CVG_HTN_001",
+      "riskFactorPattern": "hypertension",
+      "riskFactorPatternType": "contains",
+      "expectedEvidence": [
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["CREAT", "EGFR", "K", "NA"],
+          "testNames": ["Creatinine", "eGFR", "Potassium", "Sodium", "Electrolytes"],
+          "description": "Renal function and electrolytes",
+          "importance": "Hypertension can cause kidney damage; electrolyte imbalances affect treatment"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["LIPID", "CHOL", "LDL", "HDL", "TRIG"],
+          "testNames": ["Lipid Panel", "Total Cholesterol", "LDL", "HDL", "Triglycerides"],
+          "description": "Cardiovascular risk markers",
+          "importance": "Hypertension combined with dyslipidemia significantly increases cardiovascular risk"
+        },
+        {
+          "evidenceType": "document",
+          "documentTypes": ["medical_report", "ecg_report"],
+          "extractedFields": ["extractedConditions"],
+          "description": "Blood pressure readings and cardiac assessment",
+          "importance": "Recent BP readings and ECG help assess end-organ damage"
+        }
+      ]
+    },
+    {
+      "id": "CVG_CARD_001",
+      "riskFactorPattern": "cardiac|heart|coronary",
+      "riskFactorPatternType": "regex",
+      "expectedEvidence": [
+        {
+          "evidenceType": "document",
+          "documentTypes": ["ecg_report", "diagnostic_imaging"],
+          "extractedFields": ["extractedProcedures"],
+          "description": "ECG and cardiac imaging",
+          "importance": "Essential for assessing current cardiac function and structural abnormalities"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["TROP", "BNP", "CKMB"],
+          "testNames": ["Troponin", "BNP", "NT-proBNP", "CK-MB", "Cardiac Enzymes"],
+          "description": "Cardiac biomarkers",
+          "importance": "Indicates recent cardiac events or ongoing cardiac stress"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["LIPID", "CHOL", "LDL"],
+          "testNames": ["Lipid Panel", "Total Cholesterol", "LDL"],
+          "description": "Lipid profile",
+          "importance": "Lipid levels are key modifiable risk factors for cardiac disease progression"
+        },
+        {
+          "evidenceType": "document",
+          "documentTypes": ["specialist_report", "discharge_summary"],
+          "extractedFields": ["extractedConditions", "extractedProcedures"],
+          "description": "Cardiologist evaluation",
+          "importance": "Specialist assessment of cardiac status and prognosis"
+        }
+      ]
+    },
+    {
+      "id": "CVG_REN_001",
+      "riskFactorPattern": "renal|kidney|ckd",
+      "riskFactorPatternType": "regex",
+      "expectedEvidence": [
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["CREAT", "EGFR", "BUN", "CYSTC"],
+          "testNames": ["Creatinine", "eGFR", "Blood Urea Nitrogen", "Cystatin C"],
+          "description": "Renal function panel",
+          "importance": "Determines CKD staging and progression risk"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["URINE", "ACR", "UPROT"],
+          "testNames": ["Urinalysis", "Albumin-Creatinine Ratio", "Urine Protein"],
+          "description": "Proteinuria assessment",
+          "importance": "Proteinuria indicates kidney damage severity and progression risk"
+        },
+        {
+          "evidenceType": "document",
+          "documentTypes": ["specialist_report", "medical_report"],
+          "extractedFields": ["extractedConditions"],
+          "description": "Nephrology evaluation",
+          "importance": "Specialist assessment for staging and management plan"
+        }
+      ]
+    },
+    {
+      "id": "CVG_BMI_001",
+      "riskFactorPattern": "bmi|obesity|obese",
+      "riskFactorPatternType": "regex",
+      "expectedEvidence": [
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["FBG", "HBA1C", "OGTT"],
+          "testNames": ["Fasting Blood Glucose", "HbA1c", "Oral Glucose Tolerance Test"],
+          "description": "Glucose metabolism assessment",
+          "importance": "Obesity increases diabetes risk; screening helps identify prediabetes"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["LIPID", "CHOL", "LDL", "HDL", "TRIG"],
+          "testNames": ["Lipid Panel", "Total Cholesterol", "LDL", "HDL", "Triglycerides"],
+          "description": "Lipid profile",
+          "importance": "Obesity commonly associated with dyslipidemia"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["LFT", "ALT", "AST"],
+          "testNames": ["Liver Function Tests", "ALT", "AST"],
+          "description": "Liver function tests",
+          "importance": "Obesity can cause fatty liver disease (NAFLD/NASH)"
+        }
+      ]
+    },
+    {
+      "id": "CVG_SMK_001",
+      "riskFactorPattern": "smok|tobacco",
+      "riskFactorPatternType": "regex",
+      "expectedEvidence": [
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["COTIN", "COT"],
+          "testNames": ["Cotinine", "Nicotine Metabolite"],
+          "description": "Smoking verification",
+          "importance": "Confirms smoking status for accurate risk classification"
+        },
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["SPIROM", "FEV1", "PFT"],
+          "testNames": ["Spirometry", "FEV1", "Pulmonary Function Test"],
+          "description": "Pulmonary function",
+          "importance": "Assesses lung damage from smoking (COPD risk)"
+        }
+      ]
+    },
+    {
+      "id": "CVG_FH_CARD_001",
+      "riskFactorPattern": "family.*cardiac|family.*heart",
+      "riskFactorPatternType": "regex",
+      "expectedEvidence": [
+        {
+          "evidenceType": "lab_result",
+          "testCodes": ["LIPID", "CHOL", "LDL", "HDL"],
+          "testNames": ["Lipid Panel", "Total Cholesterol", "LDL", "HDL"],
+          "description": "Lipid profile",
+          "importance": "Family history of cardiac disease warrants lipid screening"
+        },
+        {
+          "evidenceType": "document",
+          "documentTypes": ["ecg_report"],
+          "extractedFields": ["extractedProcedures"],
+          "description": "Baseline ECG",
+          "importance": "Establishes cardiac baseline given hereditary risk"
+        }
+      ]
+    }
+  ]
+}

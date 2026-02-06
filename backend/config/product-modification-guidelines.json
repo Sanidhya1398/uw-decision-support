@@ -1,0 +1,547 @@
+{
+  "version": "1.0.0",
+  "lastModified": "2024-01-20T10:00:00Z",
+  "description": "Product-specific policy modification guidelines. Maps product codes and medical conditions at varying severity levels to guideline-based suggestions for loading ranges, waiting periods, and exclusion considerations.",
+  "products": {
+    "TERM-LIFE-01": {
+      "productName": "Term Life Insurance",
+      "conditions": {
+        "diabetes": {
+          "low": {
+            "loading_range": "+50–75%",
+            "waiting_period": "None",
+            "exclusion_hint": "No exclusion typically required for well-controlled Type 2 diabetes"
+          },
+          "moderate": {
+            "loading_range": "+100–150%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for diabetes-related complications"
+          },
+          "high": {
+            "loading_range": "+150–200%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for diabetes and related cardiovascular complications"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad exclusion for diabetes and all related complications recommended"
+          }
+        },
+        "hypertension": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "None",
+            "exclusion_hint": "No exclusion typically required for controlled hypertension"
+          },
+          "moderate": {
+            "loading_range": "+50–100%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for hypertension-related cardiovascular events"
+          },
+          "high": {
+            "loading_range": "+100–150%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for hypertension and target organ damage"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad cardiovascular exclusion recommended"
+          }
+        },
+        "cardiac_disease": {
+          "low": {
+            "loading_range": "+75–100%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for specific cardiac condition disclosed"
+          },
+          "moderate": {
+            "loading_range": "+100–200%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for cardiac and related vascular conditions"
+          },
+          "high": {
+            "loading_range": "+200–300%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad cardiac exclusion recommended"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "36 months or defer",
+            "exclusion_hint": "Consider deferral or broad cardiac and vascular exclusion"
+          }
+        },
+        "respiratory_disease": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "None",
+            "exclusion_hint": "No exclusion typically required for mild respiratory conditions"
+          },
+          "moderate": {
+            "loading_range": "+50–100%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for the specific respiratory condition"
+          },
+          "high": {
+            "loading_range": "+100–200%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for respiratory and related pulmonary conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad respiratory exclusion recommended"
+          }
+        },
+        "cancer_history": {
+          "low": {
+            "loading_range": "+75–100%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for the specific cancer type"
+          },
+          "moderate": {
+            "loading_range": "+100–200%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider exclusion for cancer and related conditions"
+          },
+          "high": {
+            "loading_range": "+200–300%",
+            "waiting_period": "36 months",
+            "exclusion_hint": "Broad cancer exclusion recommended"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "60 months or defer",
+            "exclusion_hint": "Consider deferral pending remission period review"
+          }
+        },
+        "obesity": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "None",
+            "exclusion_hint": "No exclusion typically required"
+          },
+          "moderate": {
+            "loading_range": "+50–75%",
+            "waiting_period": "None",
+            "exclusion_hint": "Consider exclusion for obesity-related metabolic conditions"
+          },
+          "high": {
+            "loading_range": "+75–150%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for obesity and related cardiovascular or metabolic conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Broad metabolic and cardiovascular exclusion recommended"
+          }
+        },
+        "smoking": {
+          "low": {
+            "loading_range": "+50–75%",
+            "waiting_period": "None",
+            "exclusion_hint": "Smoker rates apply; no specific exclusion"
+          },
+          "moderate": {
+            "loading_range": "+75–100%",
+            "waiting_period": "None",
+            "exclusion_hint": "Smoker rates apply; consider exclusion for smoking-related respiratory conditions"
+          },
+          "high": {
+            "loading_range": "+100–150%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for smoking-related conditions including respiratory and cardiovascular"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Broad exclusion for smoking-related conditions recommended"
+          }
+        },
+        "mental_health": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "None",
+            "exclusion_hint": "No exclusion typically required for mild, treated conditions"
+          },
+          "moderate": {
+            "loading_range": "+50–100%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for the specific mental health condition"
+          },
+          "high": {
+            "loading_range": "+100–150%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for mental health and related conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad mental health exclusion recommended"
+          }
+        }
+      }
+    },
+    "HEALTH_INDIVIDUAL": {
+      "productName": "Individual Health Insurance",
+      "conditions": {
+        "diabetes": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider waiting period for diabetes-related claims"
+          },
+          "moderate": {
+            "loading_range": "+50–100%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider exclusion for diabetes and related complications during waiting period"
+          },
+          "high": {
+            "loading_range": "+100–150%",
+            "waiting_period": "36 months",
+            "exclusion_hint": "Consider permanent exclusion for diabetes-related complications"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "48 months or permanent exclusion",
+            "exclusion_hint": "Consider permanent exclusion for diabetes and all related conditions"
+          }
+        },
+        "hypertension": {
+          "low": {
+            "loading_range": "+15–30%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider waiting period for hypertension-related claims"
+          },
+          "moderate": {
+            "loading_range": "+30–75%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for hypertension-related cardiovascular events"
+          },
+          "high": {
+            "loading_range": "+75–125%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider permanent exclusion for hypertension and target organ damage"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "36 months or permanent exclusion",
+            "exclusion_hint": "Broad cardiovascular exclusion recommended"
+          }
+        },
+        "cardiac_disease": {
+          "low": {
+            "loading_range": "+50–100%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider waiting period for cardiac-related claims"
+          },
+          "moderate": {
+            "loading_range": "+100–150%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider permanent exclusion for cardiac and vascular conditions"
+          },
+          "high": {
+            "loading_range": "+150–250%",
+            "waiting_period": "36 months or permanent exclusion",
+            "exclusion_hint": "Permanent cardiac exclusion recommended"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "Permanent exclusion or decline",
+            "exclusion_hint": "Consider decline for individual health cover"
+          }
+        },
+        "respiratory_disease": {
+          "low": {
+            "loading_range": "+15–30%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider waiting period for respiratory-related claims"
+          },
+          "moderate": {
+            "loading_range": "+30–75%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for the specific respiratory condition"
+          },
+          "high": {
+            "loading_range": "+75–150%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider permanent exclusion for respiratory conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "36 months or permanent exclusion",
+            "exclusion_hint": "Broad respiratory exclusion recommended"
+          }
+        },
+        "cancer_history": {
+          "low": {
+            "loading_range": "+50–100%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider permanent exclusion for the specific cancer type"
+          },
+          "moderate": {
+            "loading_range": "+100–200%",
+            "waiting_period": "48 months",
+            "exclusion_hint": "Consider permanent exclusion for cancer and related conditions"
+          },
+          "high": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "Permanent exclusion",
+            "exclusion_hint": "Permanent cancer exclusion recommended"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "Permanent exclusion or decline",
+            "exclusion_hint": "Consider decline for individual health cover"
+          }
+        },
+        "obesity": {
+          "low": {
+            "loading_range": "+15–25%",
+            "waiting_period": "None",
+            "exclusion_hint": "No exclusion typically required"
+          },
+          "moderate": {
+            "loading_range": "+25–50%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for obesity-related metabolic conditions"
+          },
+          "high": {
+            "loading_range": "+50–100%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for obesity and related cardiovascular or metabolic conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad metabolic exclusion recommended"
+          }
+        },
+        "smoking": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "None",
+            "exclusion_hint": "Smoker rates apply; no specific exclusion"
+          },
+          "moderate": {
+            "loading_range": "+50–75%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider exclusion for smoking-related respiratory conditions"
+          },
+          "high": {
+            "loading_range": "+75–125%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for smoking-related conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Broad smoking-related exclusion recommended"
+          }
+        },
+        "mental_health": {
+          "low": {
+            "loading_range": "+15–25%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider waiting period for mental health claims"
+          },
+          "moderate": {
+            "loading_range": "+25–50%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for the specific mental health condition"
+          },
+          "high": {
+            "loading_range": "+50–100%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider permanent exclusion for mental health conditions"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "36 months or permanent exclusion",
+            "exclusion_hint": "Broad mental health exclusion recommended"
+          }
+        }
+      }
+    },
+    "HEALTH_GROUP": {
+      "productName": "Group Health Insurance",
+      "conditions": {
+        "diabetes": {
+          "low": {
+            "loading_range": "+10–25%",
+            "waiting_period": "None (group cover)",
+            "exclusion_hint": "Standard group terms typically apply"
+          },
+          "moderate": {
+            "loading_range": "+25–50%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider group-level loading rather than individual exclusion"
+          },
+          "high": {
+            "loading_range": "+50–100%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider individual exclusion within group policy"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider individual exclusion or group-level terms adjustment"
+          }
+        },
+        "hypertension": {
+          "low": {
+            "loading_range": "+10–20%",
+            "waiting_period": "None (group cover)",
+            "exclusion_hint": "Standard group terms typically apply"
+          },
+          "moderate": {
+            "loading_range": "+20–40%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider group-level loading"
+          },
+          "high": {
+            "loading_range": "+40–75%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider individual exclusion within group policy"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider individual exclusion or group terms adjustment"
+          }
+        },
+        "cardiac_disease": {
+          "low": {
+            "loading_range": "+25–50%",
+            "waiting_period": "6 months",
+            "exclusion_hint": "Consider waiting period within group policy"
+          },
+          "moderate": {
+            "loading_range": "+50–100%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider individual exclusion within group policy"
+          },
+          "high": {
+            "loading_range": "+100–150%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Individual cardiac exclusion recommended within group policy"
+          },
+          "critical": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "Permanent exclusion within group",
+            "exclusion_hint": "Consider individual exclusion or separate terms"
+          }
+        }
+      }
+    },
+    "CRITICAL_ILLNESS": {
+      "productName": "Critical Illness Cover",
+      "conditions": {
+        "diabetes": {
+          "low": {
+            "loading_range": "+50–100%",
+            "waiting_period": "12 months",
+            "exclusion_hint": "Consider exclusion for diabetes-related critical illness events"
+          },
+          "moderate": {
+            "loading_range": "+100–150%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider exclusion for diabetes and cardiovascular critical illness events"
+          },
+          "high": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "36 months",
+            "exclusion_hint": "Consider broad exclusion for metabolic and cardiovascular CI events"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "Decline or permanent exclusion",
+            "exclusion_hint": "Consider decline for critical illness cover"
+          }
+        },
+        "cardiac_disease": {
+          "low": {
+            "loading_range": "+100–150%",
+            "waiting_period": "24 months",
+            "exclusion_hint": "Consider exclusion for cardiac-related CI events"
+          },
+          "moderate": {
+            "loading_range": "+150–250%",
+            "waiting_period": "36 months",
+            "exclusion_hint": "Consider exclusion for all cardiovascular CI events"
+          },
+          "high": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "Permanent exclusion",
+            "exclusion_hint": "Permanent cardiovascular CI exclusion recommended"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "Decline",
+            "exclusion_hint": "Consider decline for critical illness cover"
+          }
+        },
+        "cancer_history": {
+          "low": {
+            "loading_range": "+100–200%",
+            "waiting_period": "36 months",
+            "exclusion_hint": "Consider exclusion for the specific cancer CI event"
+          },
+          "moderate": {
+            "loading_range": "Refer to Senior Underwriter",
+            "waiting_period": "48 months or permanent exclusion",
+            "exclusion_hint": "Consider permanent cancer CI exclusion"
+          },
+          "high": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "Permanent exclusion",
+            "exclusion_hint": "Permanent cancer exclusion recommended"
+          },
+          "critical": {
+            "loading_range": "Refer to Medical Director",
+            "waiting_period": "Decline",
+            "exclusion_hint": "Consider decline for critical illness cover"
+          }
+        }
+      }
+    }
+  },
+  "conditionMapping": {
+    "description": "Maps risk factor names (from risk_factors entity) to condition keys used in product guidelines. Case-insensitive matching with keyword support.",
+    "mappings": [
+      { "keywords": ["diabetes", "diabetic", "blood sugar", "hba1c", "glucose", "type 1", "type 2"], "conditionKey": "diabetes" },
+      { "keywords": ["hypertension", "blood pressure", "bp elevated", "high bp"], "conditionKey": "hypertension" },
+      { "keywords": ["cardiac", "heart", "coronary", "angina", "myocardial", "arrhythmia", "atrial fibrillation", "valve"], "conditionKey": "cardiac_disease" },
+      { "keywords": ["respiratory", "asthma", "copd", "bronchitis", "pulmonary", "lung", "pneumonia"], "conditionKey": "respiratory_disease" },
+      { "keywords": ["cancer", "carcinoma", "tumor", "tumour", "malignant", "neoplasm", "oncology", "lymphoma", "leukemia"], "conditionKey": "cancer_history" },
+      { "keywords": ["obese", "obesity", "bmi", "overweight", "morbid obesity"], "conditionKey": "obesity" },
+      { "keywords": ["smoking", "smoker", "tobacco", "nicotine", "cigarette"], "conditionKey": "smoking" },
+      { "keywords": ["depression", "anxiety", "mental health", "psychiatric", "bipolar", "schizophrenia", "psychological"], "conditionKey": "mental_health" }
+    ]
+  },
+  "defaultGuidance": {
+    "description": "Default guidance when no product-specific or condition-specific match is found",
+    "low": {
+      "loading_range": "Standard terms may apply — refer to underwriting manual",
+      "waiting_period": "Standard policy waiting period",
+      "exclusion_hint": "No specific exclusion guidance available for this condition"
+    },
+    "moderate": {
+      "loading_range": "Consider loading — refer to underwriting manual for range",
+      "waiting_period": "Consider extended waiting period",
+      "exclusion_hint": "Consider condition-specific exclusion — refer to underwriting manual"
+    },
+    "high": {
+      "loading_range": "Significant loading likely required — refer to underwriting manual",
+      "waiting_period": "Extended waiting period recommended",
+      "exclusion_hint": "Condition-specific exclusion recommended — refer to underwriting manual"
+    },
+    "critical": {
+      "loading_range": "Refer to Senior Underwriter or Medical Director",
+      "waiting_period": "Extended waiting period or deferral — refer to underwriting manual",
+      "exclusion_hint": "Broad exclusion or deferral recommended — refer to underwriting manual"
+    }
+  }
+}

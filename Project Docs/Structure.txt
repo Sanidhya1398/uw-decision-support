@@ -1,0 +1,477 @@
+ Here is the complete data flow of the UW AUTO 2 (Underwriting Automation & Decision Support System) with all API
+  names:
+
+  ---
+  System Architecture Overview
+
+  ┌─────────────────┐     ┌───────────────────────┐     ┌──────────────────┐
+  │   FRONTEND      │     │   BACKEND (NestJS)    │     │  ML SERVICE      │
+  │   React + Vite  │◄───►│   Port 3001           │◄───►│  FastAPI/Python  │
+  │   Port 5173     │     │   /api/v1/*            │     │  Port 8000       │
+  │                 │     │                       │     │  /api/v1/*        │
+  │  Zustand Store  │     │  SQLite3 Database     │     │  Scikit-learn     │
+  │  TanStack Query │     │  TypeORM Entities     │     │  LightGBM         │
+  └─────────────────┘     └───────────────────────┘     └──────────────────┘
+
+  ---
+  Complete Data Flow (End-to-End Underwriting Lifecycle)
+
+  ╔══════════════════════════════════════════════════════════════════════════════════╗
+  ║  PHASE 1: CASE CREATION & INTAKE                                               ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  Underwriter/System                                                            ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  ┌─────────────────────────────────────────────┐                               ║
+  ║  │  GET /api/v1/cases                          │ ◄── List & filter cases       ║
+  ║  │  GET /api/v1/cases/dashboard                │ ◄── Dashboard metrics         ║
+  ║  │  GET /api/v1/cases/{id}                     │ ◄── Full case details         ║
+  ║  │  POST /api/v1/cases/{id}/assign             │ ◄── Assign to underwriter    ║
+  ║  │  PATCH /api/v1/cases/{id}/status            │ ◄── Update status            ║
+  ║  │  POST /api/v1/cases/{id}/notes              │ ◄── Add case note            ║
+  ║  │  GET /api/v1/cases/{id}/history             │ ◄── Audit trail              ║
+  ║  └─────────────────────┬───────────────────────┘                               ║
+  ║                        │                                                        ║
+  ║    Status: RECEIVED ──►│──► PENDING_REVIEW ──► IN_PROGRESS                     ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  PHASE 2: DOCUMENT UPLOAD & NLP EXTRACTION                                     ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  ┌─────────────────────────────────────────────────────────────────────┐        ║
+  ║  │  POST /api/v1/cases/{caseId}/documents/upload   (multipart, 10MB) │        ║
+  ║  │       │                                                            │        ║
+  ║  │       ▼                                                            │        ║
+  ║  │  ┌────────────────────────────┐                                    │        ║
+  ║  │  │  PDF Text Extraction       │ ◄── pdf-parse library             │        ║
+  ║  │  │  (Native PDF or OCR)       │                                    │        ║
+  ║  │  └────────────┬───────────────┘                                    │        ║
+  ║  │               ▼                                                    │        ║
+  ║  │  POST /api/v1/cases/{caseId}/documents/{docId}/extract            │        ║
+  ║  │  POST /api/v1/cases/{caseId}/documents/{docId}/process            │        ║
+  ║  │       │                                                            │        ║
+  ║  │       ▼                                                            │        ║
+  ║  │  ┌────────────────────────────────────────────────────┐            │        ║
+  ║  │  │  NLP Service (Rule-based Entity Extraction)        │            │        ║
+  ║  │  │  ┌──────────────────────────────────────────────┐  │            │        ║
+  ║  │  │  │  Extracts:                                   │  │            │        ║
+  ║  │  │  │  • Medical Conditions (ICD codes)            │  │            │        ║
+  ║  │  │  │  • Medications (drug name, dosage, freq)     │  │            │        ║
+  ║  │  │  │  • Lab Values (numeric + reference ranges)   │  │            │        ║
+  ║  │  │  │  • Dates (diagnosis, procedures)             │  │            │        ║
+  ║  │  │  │  • Procedures (surgical, diagnostic)         │  │            │        ║
+  ║  │  │  │  Detects: Negation & Affirmation patterns    │  │            │        ║
+  ║  │  │  │  Outputs: Confidence score per extraction    │  │            │        ║
+  ║  │  │  └──────────────────────────────────────────────┘  │            │        ║
+  ║  │  └────────────┬───────────────────────────────────────┘            │        ║
+  ║  │               ▼                                                    │        ║
+  ║  │  POST /api/v1/cases/{caseId}/documents/{docId}/verify             │        ║
+  ║  │       │                                                            │        ║
+  ║  │       ▼                                                            │        ║
+  ║  │  POST /api/v1/cases/{caseId}/documents/{docId}/sync-to-disclosures│        ║
+  ║  │       │                                                            │        ║
+  ║  │       ▼                                                            │        ║
+  ║  │  ┌────────────────────────────┐                                    │        ║
+  ║  │  │  MedicalDisclosure Records │ ◄── Created in DB                 │        ║
+  ║  │  │  (Conditions, Medications, │                                    │        ║
+  ║  │  │   Family History, Surgery) │                                    │        ║
+  ║  │  └────────────────────────────┘                                    │        ║
+  ║  │                                                                    │        ║
+  ║  │  Other Document APIs:                                              │        ║
+  ║  │  GET  /api/v1/cases/{caseId}/documents                            │        ║
+  ║  │  GET  /api/v1/cases/{caseId}/documents/{docId}                    │        ║
+  ║  │  GET  /api/v1/cases/{caseId}/documents/{docId}/download           │        ║
+  ║  │  POST /api/v1/cases/{caseId}/documents/{docId}/manual-text        │        ║
+  ║  └─────────────────────────────────────────────────────────────────────┘        ║
+  ║                        │                                                        ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  PHASE 3: RISK ASSESSMENT                                                      ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  POST /api/v1/cases/{caseId}/risk/assess                                       ║
+  ║       │                                                                        ║
+  ║       ├──────────────────────────────┐                                         ║
+  ║       │                              │                                         ║
+  ║       ▼                              ▼                                         ║
+  ║  ┌──────────────────────┐  ┌─────────────────────────────────────┐             ║
+  ║  │  RULES ENGINE        │  │  ML COMPLEXITY CLASSIFICATION       │             ║
+  ║  │                      │  │                                     │             ║
+  ║  │  100+ Risk Rules     │  │  Backend:  ML Service (fallback)    │             ║
+  ║  │  from config/        │  │     OR                              │             ║
+  ║  │  risk-rules.json     │  │  ML Service (primary):              │             ║
+  ║  │                      │  │  POST /api/v1/classify-complexity   │             ║
+  ║  │  Evaluates:          │  │                                     │             ║
+  ║  │  • Age rules         │  │  Features:                          │             ║
+  ║  │  • BMI rules         │  │  • Age, Sum Assured                 │             ║
+  ║  │  • Smoking rules     │  │  • Medical conditions count/type    │             ║
+  ║  │  • Diabetes rules    │  │  • Lifestyle (smoking, alcohol)     │             ║
+  ║  │  • Cardiac rules     │  │  • BMI category                     │             ║
+  ║  │  • Cancer rules      │  │  • Family history                   │             ║
+  ║  │  • etc.              │  │                                     │             ║
+  ║  │                      │  │  Output:                            │             ║
+  ║  │  Operators:          │  │  • Tier: Routine/Moderate/Complex   │             ║
+  ║  │  ==, !=, <, >, <=,   │  │  • Confidence score                │             ║
+  ║  │  >=, contains, in,   │  │  • Feature contributions            │             ║
+  ║  │  matches, exists     │  │  • Probabilities per tier           │             ║
+  ║  │                      │  │                                     │             ║
+  ║  │  AND/OR compound     │  │  Circuit Breaker:                   │             ║
+  ║  │  conditions          │  │  CLOSED → OPEN → HALF_OPEN          │             ║
+  ║  │                      │  │  (auto fallback to deterministic)   │             ║
+  ║  └──────────┬───────────┘  └──────────────────┬──────────────────┘             ║
+  ║             │                                  │                                ║
+  ║             ▼                                  ▼                                ║
+  ║  ┌──────────────────────────────────────────────────────────┐                  ║
+  ║  │  RiskFactor Records Created in DB                        │                  ║
+  ║  │  • Category: Medical/Lifestyle/Financial/Occupational    │                  ║
+  ║  │  • Severity: Low/Moderate/High/Critical                  │                  ║
+  ║  │  • Complexity weight for tier calculation                │                  ║
+  ║  └──────────────────────────────────────────────────────────┘                  ║
+  ║                                                                                ║
+  ║  Underwriter Override APIs:                                                    ║
+  ║  GET   /api/v1/cases/{caseId}/risk              ◄── View assessment           ║
+  ║  POST  /api/v1/cases/{caseId}/risk/factors       ◄── Add manual factor        ║
+  ║  PATCH /api/v1/cases/{caseId}/risk/factors/{id}/severity ◄── Override severity║
+  ║  POST  /api/v1/cases/{caseId}/risk/factors/{id}/verify   ◄── Verify factor   ║
+  ║  POST  /api/v1/cases/{caseId}/risk/complexity/override   ◄── Override tier    ║
+  ║                        │                                                        ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  PHASE 4: TEST RECOMMENDATIONS                                                ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  POST /api/v1/cases/{caseId}/tests/recommend                                   ║
+  ║       │                                                                        ║
+  ║       ├──────────────────┬─────────────────────────┐                           ║
+  ║       │                  │                         │                           ║
+  ║       ▼                  ▼                         ▼                           ║
+  ║  ┌──────────────┐  ┌──────────────────┐  ┌──────────────────────────┐         ║
+  ║  │  PROTOCOL    │  │  RULE-TRIGGERED  │  │  ML YIELD PREDICTION     │         ║
+  ║  │  BASED TESTS │  │  TESTS           │  │                          │         ║
+  ║  │              │  │                  │  │  Backend: ML Service     │         ║
+  ║  │  From config/│  │  Risk rules can  │  │     OR                   │         ║
+  ║  │  test-       │  │  trigger tests   │  │  ML Service (primary):   │         ║
+  ║  │  protocols.  │  │  as actions      │  │  POST /api/v1/           │         ║
+  ║  │  json        │  │                  │  │   predict-test-yield     │         ║
+  ║  │              │  │                  │  │                          │         ║
+  ║  │  Thresholds: │  │                  │  │  Per-test yield:         │         ║
+  ║  │  25L, 50L,   │  │                  │  │  • Probability of        │         ║
+  ║  │  1Cr sum     │  │                  │  │    finding abnormality   │         ║
+  ║  │  assured     │  │                  │  │  • High/Moderate/Low     │         ║
+  ║  └──────┬───────┘  └────────┬─────────┘  └────────────┬─────────────┘         ║
+  ║         │                   │                          │                        ║
+  ║         └───────────────────┼──────────────────────────┘                        ║
+  ║                             ▼                                                   ║
+  ║  ┌──────────────────────────────────────────────────────────┐                  ║
+  ║  │  TestRecommendation Records                              │                  ║
+  ║  │  • Tests: CBC, FBS, HbA1c, Lipid, ECG, Urine, etc.     │                  ║
+  ║  │  • Types: Mandatory / Conditional / Suggested           │                  ║
+  ║  │  • ML yield score + category                            │                  ║
+  ║  │  • Cost & turnaround estimates                          │                  ║
+  ║  └──────────────────────────────────────────────────────────┘                  ║
+  ║                                                                                ║
+  ║  Underwriter Actions:                                                          ║
+  ║  GET    /api/v1/cases/{caseId}/tests              ◄── View tests              ║
+  ║  POST   /api/v1/cases/{caseId}/tests/add          ◄── Add test manually       ║
+  ║  DELETE /api/v1/cases/{caseId}/tests/{testId}     ◄── Remove test             ║
+  ║  PATCH  /api/v1/cases/{caseId}/tests/{id}/substitute ◄── Substitute test      ║
+  ║  POST   /api/v1/cases/{caseId}/tests/order        ◄── Finalize & order        ║
+  ║                        │                                                        ║
+  ║    Status: AWAITING_TESTS                                                      ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  PHASE 5: TEST RESULTS INGESTION                                               ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  GET /api/v1/cases/{caseId}/tests/results                                      ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  ┌──────────────────────────────────────────────────────────┐                  ║
+  ║  │  TestResult Records                                      │                  ║
+  ║  │  • Source: Lab Feed / Document Extraction / Manual Entry │                  ║
+  ║  │  • Numeric values + reference ranges                    │                  ║
+  ║  │  • Abnormal flags: Normal/Low/High/Critical             │                  ║
+  ║  │  • Clinical interpretation                              │                  ║
+  ║  │  • Fasting status                                        │                  ║
+  ║  │                                                          │                  ║
+  ║  │  If Abnormal → Updates Risk Assessment                  │                  ║
+  ║  └──────────────────────────────────────────────────────────┘                  ║
+  ║                        │                                                        ║
+  ║    Status: AWAITING_DECISION                                                   ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  PHASE 6: DECISION MAKING                                                      ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  GET /api/v1/cases/{caseId}/decisions/options                                  ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  ┌──────────────────────────────────────────────────────────┐                  ║
+  ║  │  DECISION RULES ENGINE                                   │                  ║
+  ║  │  (config/decision-rules.json)                            │                  ║
+  ║  │                                                          │                  ║
+  ║  │  Evaluates risk factors → generates options:             │                  ║
+  ║  │  ┌─────────────────────────────────────────────────┐     │                  ║
+  ║  │  │  1. Standard Acceptance   (no high/critical)    │     │                  ║
+  ║  │  │  2. Modified Acceptance   (exclusions/loading)  │     │                  ║
+  ║  │  │  3. Deferral             (need more info)       │     │                  ║
+  ║  │  │  4. Referral             (to senior/director)   │     │                  ║
+  ║  │  │  5. Postponement         (temporary delay)      │     │                  ║
+  ║  │  │  6. Decline              (unacceptable risk)    │     │                  ║
+  ║  │  └─────────────────────────────────────────────────┘     │                  ║
+  ║  │  System recommends primary option                        │                  ║
+  ║  └──────────────────────────────────────────────────────────┘                  ║
+  ║                        │                                                        ║
+  ║                        ▼                                                        ║
+  ║  POST /api/v1/cases/{caseId}/decisions      ◄── Underwriter makes decision    ║
+  ║       │                                                                        ║
+  ║       ├─── If override from system recommendation:                             ║
+  ║       │    POST /api/v1/cases/{caseId}/overrides  ◄── Record override          ║
+  ║       │                                                                        ║
+  ║       ├─── If needs review:                                                    ║
+  ║       │    POST /api/v1/cases/{caseId}/decisions/{id}/review                   ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  Other Decision APIs:                                                          ║
+  ║  GET  /api/v1/cases/{caseId}/decisions          ◄── Decision history           ║
+  ║  GET  /api/v1/cases/{caseId}/decisions/current   ◄── Current decision          ║
+  ║                        │                                                        ║
+  ║    Status: DECISION_MADE                                                       ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  PHASE 7: COMMUNICATION GENERATION & DISPATCH                                  ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  POST /api/v1/cases/{caseId}/communications/generate                           ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  ┌──────────────────────────────────────────────────────────┐                  ║
+  ║  │  NLG ASSEMBLY SERVICE (Deterministic, No GenAI)          │                  ║
+  ║  │                                                          │                  ║
+  ║  │  Three-tier phrase library:                              │                  ║
+  ║  │  1. Opening phrases (by communication type)              │                  ║
+  ║  │  2. Condition-specific phrases                           │                  ║
+  ║  │  3. Modification phrases (exclusions, loading, etc.)     │                  ║
+  ║  │                                                          │                  ║
+  ║  │  Communication Types:                                    │                  ║
+  ║  │  • Requirements Letter                                   │                  ║
+  ║  │  • Standard Acceptance Letter                            │                  ║
+  ║  │  • Modified Acceptance Letter                            │                  ║
+  ║  │  • Postponement Notice                                   │                  ║
+  ║  │  • Decline Letter                                        │                  ║
+  ║  │  • Information Request                                   │                  ║
+  ║  │  • Test Order                                            │                  ║
+  ║  │                                                          │                  ║
+  ║  │  Sections: Header(locked), Salutation(locked),           │                  ║
+  ║  │           Body(editable), Compliance(locked),            │                  ║
+  ║  │           Closing(editable), Signature(locked)           │                  ║
+  ║  └──────────────────────────────────────────────────────────┘                  ║
+  ║                        │                                                        ║
+  ║                        ▼                                                        ║
+  ║  PATCH /api/v1/cases/{caseId}/communications/{commId}  ◄── Edit draft         ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  POST /api/v1/cases/{caseId}/communications/{commId}/approve ◄── Approve      ║
+  ║       │                                                                        ║
+  ║       ▼                                                                        ║
+  ║  POST /api/v1/cases/{caseId}/communications/{commId}/send   ◄── Dispatch      ║
+  ║       │                                          (Email / Print / Portal)      ║
+  ║       ▼                                                                        ║
+  ║  Other Communication APIs:                                                     ║
+  ║  GET  /api/v1/cases/{caseId}/communications                                   ║
+  ║  GET  /api/v1/cases/{caseId}/communications/{commId}                           ║
+  ║                        │                                                        ║
+  ║    Status: COMMUNICATION_PENDING ──► COMPLETED                                 ║
+  ║                        ▼                                                        ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  CROSS-CUTTING: AUDIT, OVERRIDES & LEARNING                                   ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  AUDIT LOGGING (automatic on every action):                                    ║
+  ║  GET  /api/v1/audit                        ◄── Recent logs                     ║
+  ║  GET  /api/v1/audit/action/{action}        ◄── By action type                  ║
+  ║  GET  /api/v1/audit/category/{category}    ◄── By category                     ║
+  ║  GET  /api/v1/audit/user/{userId}          ◄── By user                         ║
+  ║                                                                                ║
+  ║  OVERRIDE LEARNING LOOP:                                                       ║
+  ║  GET  /api/v1/cases/{caseId}/overrides          ◄── Case overrides             ║
+  ║  POST /api/v1/cases/{caseId}/overrides          ◄── Record override            ║
+  ║  GET  /api/v1/cases/{caseId}/similar            ◄── Find similar cases         ║
+  ║  GET  /api/v1/cases/{caseId}/learning-insights  ◄── ML insights               ║
+  ║  GET  /api/v1/overrides/stats                   ◄── Statistics                  ║
+  ║  GET  /api/v1/overrides/patterns                ◄── Pattern detection           ║
+  ║  GET  /api/v1/overrides/pending-validation      ◄── Awaiting validation        ║
+  ║  POST /api/v1/overrides/{id}/validate           ◄── Validate override          ║
+  ║  POST /api/v1/overrides/{id}/flag               ◄── Flag for review            ║
+  ║                                                                                ║
+  ║  ML RETRAINING (feeds overrides back into model):                              ║
+  ║  POST /api/v1/training/trigger            ◄── Trigger retraining (ML Service)  ║
+  ║  GET  /api/v1/training/status/{job_id}    ◄── Training job status              ║
+  ║                                                                                ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  CROSS-CUTTING: RULES ADMINISTRATION                                           ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  RISK RULES:                                                                   ║
+  ║  GET/POST       /api/v1/rules/risk             ◄── List / Create               ║
+  ║  GET/PUT/DELETE /api/v1/rules/risk/{id}        ◄── Read / Update / Delete      ║
+  ║  POST           /api/v1/rules/risk/{id}/toggle ◄── Enable/Disable              ║
+  ║                                                                                ║
+  ║  TEST PROTOCOLS:                                                               ║
+  ║  GET/POST       /api/v1/rules/test-protocols             ◄── List / Create     ║
+  ║  GET/PUT/DELETE /api/v1/rules/test-protocols/{id}        ◄── CRUD              ║
+  ║  POST           /api/v1/rules/test-protocols/{id}/toggle ◄── Toggle            ║
+  ║                                                                                ║
+  ║  DECISION RULES:                                                               ║
+  ║  GET/POST       /api/v1/rules/decision             ◄── List / Create           ║
+  ║  GET/PUT/DELETE /api/v1/rules/decision/{id}        ◄── CRUD                    ║
+  ║  POST           /api/v1/rules/decision/{id}/toggle ◄── Toggle                  ║
+  ║                                                                                ║
+  ║  SHARED RULE APIs:                                                             ║
+  ║  POST /api/v1/rules/validate                     ◄── Validate before save      ║
+  ║  GET  /api/v1/rules/{type}/history               ◄── Version history           ║
+  ║  POST /api/v1/rules/{type}/rollback/{version}    ◄── Rollback                  ║
+  ║  POST /api/v1/rules/{type}/reorder               ◄── Priority reorder          ║
+  ║  GET  /api/v1/rules/{type}/export                ◄── Export JSON               ║
+  ║  POST /api/v1/rules/{type}/import                ◄── Import JSON               ║
+  ║                                                                                ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║  ML SERVICE APIs (Python FastAPI - Port 8000)                                  ║
+  ╠══════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                ║
+  ║  GET  /api/v1/health                  ◄── Health check (polled every 30s)      ║
+  ║  GET  /api/v1/models/info             ◄── Model metadata                       ║
+  ║  POST /api/v1/classify-complexity     ◄── Complexity tier prediction           ║
+  ║  POST /api/v1/predict-test-yield      ◄── Test diagnostic yield prediction     ║
+  ║  POST /api/v1/training/trigger        ◄── Trigger model retraining             ║
+  ║  GET  /api/v1/training/status/{id}    ◄── Training job status                  ║
+  ║                                                                                ║
+  ╚══════════════════════════════════════════════════════════════════════════════════╝
+
+  ---
+  Data Flow Summary Diagram (Simplified)
+
+                      ┌──────────┐
+                      │  Browser │
+                      │ (React)  │
+                      └────┬─────┘
+                           │ HTTP (port 5173 → 3001)
+                           ▼
+  ┌────────────────────────────────────────────────────────────────┐
+  │                    NestJS Backend (:3001)                       │
+  │                    /api/v1/*                                    │
+  │                                                                │
+  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │
+  │  │  Cases   │  │Documents │  │   Risk   │  │    Tests     │  │
+  │  │Controller│  │Controller│  │Controller│  │  Controller  │  │
+  │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬───────┘  │
+  │       │              │             │               │           │
+  │  ┌────┴─────┐  ┌────┴─────┐  ┌────┴─────┐  ┌──────┴───────┐  │
+  │  │  Cases   │  │  Doc     │  │  Risk    │  │   Tests      │  │
+  │  │ Service  │  │Processing│  │ Service  │  │  Service     │  │
+  │  └────┬─────┘  │ Service  │  └────┬─────┘  └──────┬───────┘  │
+  │       │        └────┬─────┘       │               │           │
+  │       │             │             │               │           │
+  │       │        ┌────┴─────┐  ┌────┴──────────────┴────────┐  │
+  │       │        │   NLP    │  │      RULE ENGINE           │  │
+  │       │        │ Service  │  │  (risk-rules.json,         │  │
+  │       │        └──────────┘  │   test-protocols.json,     │  │
+  │       │                      │   decision-rules.json)     │  │
+  │       │                      └────────────────────────────┘  │
+  │       │                                                       │
+  │  ┌────┴──────────────────────────────────────┐                │
+  │  │           ML Client Service               │────────┐      │
+  │  │  (Circuit Breaker: CLOSED/OPEN/HALF_OPEN) │        │      │
+  │  └───────────────┬───────────────────────────┘        │      │
+  │                  │ fallback                            │      │
+  │           ┌──────┴──────┐                             │      │
+  │           │  ML Service │                             │      │
+  │           │(deterministic│                            │      │
+  │           │  fallback)   │                             │      │
+  │           └─────────────┘                             │      │
+  │                                                       │      │
+  │  ┌──────────┐  ┌──────────┐  ┌──────────────┐        │      │
+  │  │Decisions │  │  Comms   │  │   Override   │        │      │
+  │  │Controller│  │Controller│  │  Controller  │        │      │
+  │  └────┬─────┘  └────┬─────┘  └──────┬───────┘        │      │
+  │       │              │               │                │      │
+  │       │         ┌────┴─────┐         │                │      │
+  │       │         │   NLG    │         │                │      │
+  │       │         │ Assembly │         │                │      │
+  │       │         │ Service  │         │                │      │
+  │       │         └──────────┘         │                │      │
+  │       │                              │                │      │
+  │  ┌────┴──────────────────────────────┴────────┐       │      │
+  │  │            TypeORM + SQLite3               │       │      │
+  │  │         (uw_decision_support.db)           │       │      │
+  │  │  11 Entities: Case, Applicant, Medical     │       │      │
+  │  │  Disclosure, Document, RiskFactor, Test    │       │      │
+  │  │  Recommendation, TestResult, Decision,     │       │      │
+  │  │  Communication, AuditLog, Override         │       │      │
+  │  └────────────────────────────────────────────┘       │      │
+  └───────────────────────────────────────────────────────┼──────┘
+                                                          │
+                                                HTTP (:8000)
+                                                          │
+                                                 ┌────────┴────────┐
+                                                 │  ML Service     │
+                                                 │  (FastAPI)      │
+                                                 │                 │
+                                                 │  Models:        │
+                                                 │  • Complexity   │
+                                                 │  • Test Yield   │
+                                                 │                 │
+                                                 │  Training:      │
+                                                 │  • Override     │
+                                                 │    Learning     │
+                                                 │  • Retraining   │
+                                                 │    Pipeline     │
+                                                 └─────────────────┘
+
+  ---
+  Case Status Flow
+
+  RECEIVED → PENDING_REVIEW → IN_PROGRESS → AWAITING_TESTS → AWAITING_DECISION → DECISION_MADE → COMMUNICATION_PENDING →
+   COMPLETED
+                                   │                                                      │
+                                   └──► AWAITING_INFORMATION ──────────────────────────────┘
+                                          (loop back when info received)
+
+  ---
+  Key Takeaways
+  ┌────────────┬────────────────────────────┬──────┬─────────────────────────────────────────────┐
+  │   Layer    │         Technology         │ Port │                    Role                     │
+  ├────────────┼────────────────────────────┼──────┼─────────────────────────────────────────────┤
+  │ Frontend   │ React + Vite + TailwindCSS │ 5173 │ UI for underwriters                         │
+  ├────────────┼────────────────────────────┼──────┼─────────────────────────────────────────────┤
+  │ Backend    │ NestJS + TypeORM + SQLite3 │ 3001 │ REST API, rules engine, NLP, NLG            │
+  ├────────────┼────────────────────────────┼──────┼─────────────────────────────────────────────┤
+  │ ML Service │ FastAPI + Scikit-learn     │ 8000 │ Complexity classification, yield prediction │
+  ├────────────┼────────────────────────────┼──────┼─────────────────────────────────────────────┤
+  │ Database   │ SQLite3                    │ -    │ 11 entities, auto-synced schema             │
+  └────────────┴────────────────────────────┴──────┴─────────────────────────────────────────────┘
+  The system follows a linear underwriting pipeline (Intake → Documents → Risk → Tests → Decision → Communication) with
+  cross-cutting concerns (audit logging, override tracking, rules administration) available at every phase. The ML
+  service operates with a circuit breaker pattern — if the Python service is down, the backend falls back to a
+  deterministic ML implementation built into the NestJS service.
+
+
+
+ Quick Reference: Which PENDING Case Tests What
+  ┌──────────────┬─────────────────┬──────────────────────┬─────────────────────────────┐
+  │ PENDING Case │    Open This    │ To See Learning From │    Override Type Learned    │
+  ├──────────────┼─────────────────┼──────────────────────┼─────────────────────────────┤
+  │ UW-2024-102  │ Diabetes case   │ Cases 100, 101       │ Complexity downgrade        │
+  ├──────────────┼─────────────────┼──────────────────────┼─────────────────────────────┤
+  │ UW-2024-105  │ Cardiac case    │ Cases 103, 104       │ Test removal (TMT)          │
+  ├──────────────┼─────────────────┼──────────────────────┼─────────────────────────────┤
+  │ UW-2024-108  │ HTN case        │ Cases 106, 107       │ Risk severity downgrade     │
+  ├──────────────┼─────────────────┼──────────────────────┼─────────────────────────────┤
+  │ UW-2024-111  │ DM+HTN case     │ Cases 109, 110       │ Triple override (best demo) │
+  ├──────────────┼─────────────────┼──────────────────────┼─────────────────────────────┤
+  │ UW-2024-114  │ NAFLD case      │ Cases 112, 113       │ High-confidence ML override │
+  ├──────────────┼─────────────────┼──────────────────────┼─────────────────────────────┤
+  │ UW-2024-117  │ Thyroid+anxiety │ Cases 115, 116       │ Decision type override      │
+  └──────────────┴─────────────────┴──────────────────────┴─────────────────────────────┘
+  Best case for a comprehensive demo: Start with UW-2024-111 (Case 111) — it shows all 3 override types learned from similar cases simultaneously.
