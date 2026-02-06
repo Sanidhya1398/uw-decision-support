@@ -31,7 +31,11 @@ async function autoSeedIfEmpty() {
   if (needsSeed) {
     console.log('Empty database detected. Running auto-seed...');
     try {
-      execSync('npx ts-node src/database/seed.ts', {
+      const isProduction = process.env.NODE_ENV === 'production';
+      const seedCommand = isProduction
+        ? 'node dist/database/seed.js'
+        : 'npx ts-node src/database/seed.ts';
+      execSync(seedCommand, {
         stdio: 'inherit',
         cwd: path.resolve(__dirname, '..'),
       });
@@ -48,9 +52,9 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for frontend
+  // Enable CORS
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: true,
     credentials: true,
   });
 

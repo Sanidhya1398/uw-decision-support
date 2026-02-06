@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 // Feature modules
 import { CasesModule } from './modules/cases/cases.module';
@@ -33,6 +35,10 @@ import { RiskFactor } from './entities/risk-factor.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', '..', 'frontend', 'dist'),
+      exclude: ['/api/(.*)'],
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
