@@ -16,12 +16,11 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create models directory
+RUN mkdir -p /app/models/v1
+
 # Copy application code
 COPY app/ ./app/
-COPY models/ ./models/
-
-# Create models directory if it doesn't exist
-RUN mkdir -p /app/models/v1
 
 # Set environment variables
 ENV PYTHONPATH=/app
