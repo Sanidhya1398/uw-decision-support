@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for caching
-COPY ml-service/requirements.txt .
+# Install CPU-only PyTorch first (avoids 5GB+ CUDA download)
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
-# Install Python dependencies
+# Copy requirements and install remaining dependencies
+COPY ml-service/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Create models directory
